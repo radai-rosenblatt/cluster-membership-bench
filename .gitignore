@@ -1,0 +1,6 @@
+# maven artifacts
+target/
+
+# idea artifacts
+.idea/
+*.iml

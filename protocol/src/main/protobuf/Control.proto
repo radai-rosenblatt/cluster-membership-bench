@@ -1,0 +1,59 @@
+/*
+ *     Copyright (c) 2018 Radai Rosenblatt 
+ *     This file is part of Cluster-Membership-Bench.
+ *
+ *     Cluster-Membership-Bench is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     Cluster-Membership-Bench is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with Cluster-Membership-Bench.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "net.radai.clusterbench.control.api";
+option java_outer_classname = "Control";
+
+package helloworld;
+
+// benchmark controller service
+service Controller {
+    // registration of a new node to this controller
+    rpc register (RegistrationRequest) returns (RegistrationResponse) {}
+    // bidirectional heartbeat between node and controller
+    rpc heartbeat (stream NodeHeartbeat) returns (stream ControllerHeartbeat) {}
+}
+
+// the 1st resuest sent by a freshly-booted node to the controller
+message RegistrationRequest {
+    int64 timestamp = 1; //utc MICROSECONDS of msg generation
+}
+
+// response to registration request
+message RegistrationResponse {
+    int64 timestamp = 1; //utc MICROSECONDS of msg generation
+    int32 assignedNodeId = 2;
+}
+
+message NodeHeartbeat {
+    int64 timestamp = 1; //utc MICROSECONDS of msg generation
+    int32 nodeId = 2;
+    int64 seq = 3; // >0
+    int64 inResponseToSeq = 4; //seq of heartbeat this is in response to
+    int64 inResponseToTs = 5;  //timestamp in the above heartbeat
+}
+
+message ControllerHeartbeat {
+    int64 timestamp = 1; //utc MICROSECONDS of msg generation
+    int64 seq = 2; // >0
+    int64 inResponseToSeq = 3; //seq of heartbeat this is in response to
+    int64 inResponseToTs = 4;  //timestamp in the above heartbeat
+}
