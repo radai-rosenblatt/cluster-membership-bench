@@ -38,6 +38,8 @@
     <modules>
         <module>protocol</module>
         <module>controller</module>
+        <module>node</module>
+        <module>integration-tests</module>
     </modules>
     
     <build>
@@ -103,6 +105,16 @@
 
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>controller</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>node</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>protocol</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -125,6 +137,11 @@
                 <version>${grpc.version}</version>
             </dependency>
             <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-tcnative-boringssl-static</artifactId>
+                <version>2.0.7.Final</version>
+            </dependency>
+            <dependency>
                 <groupId>com.google.protobuf</groupId>
                 <artifactId>protobuf-java</artifactId>
                 <version>${protobuf.version}</version>
@@ -133,6 +150,11 @@
                 <groupId>com.google.protobuf</groupId>
                 <artifactId>protobuf-java-util</artifactId>
                 <version>${protobuf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.unimi.dsi</groupId>
+                <artifactId>fastutil</artifactId>
+                <version>8.1.1</version>
             </dependency>
             <dependency>
                 <groupId>io.dropwizard.metrics</groupId>

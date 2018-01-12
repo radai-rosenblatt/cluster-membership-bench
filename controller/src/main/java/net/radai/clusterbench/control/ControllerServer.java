@@ -21,10 +21,13 @@ package net.radai.clusterbench.control;
 import io.grpc.Server;
 import io.grpc.netty.NettyServerBuilder;
 import net.radai.clusterbench.control.api.ControllerGrpc;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
 public class ControllerServer implements AutoCloseable {
+    private final static Logger log = LogManager.getLogger(ControllerServer.class);
     
     private final ControllerGrpc.ControllerImplBase controllerImpl;
     private Server server;
@@ -47,6 +50,7 @@ public class ControllerServer implements AutoCloseable {
                     .addService(controllerImpl)
                     .build()
                     .start();
+            log.info("server started and listening on port {}", server.getPort());
         } catch (IOException e) {
             throw new IllegalStateException("unable to start", e);
         }
@@ -54,7 +58,9 @@ public class ControllerServer implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
+        log.info("shutting down");
         server.shutdown();
         server.awaitTermination();
+        log.info("shutdown complete");
     }
 }
